@@ -1,0 +1,143 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Tag Generator ✨</title>
+  <style>
+    body {
+      font-family: 'Times New Roman', serif;
+      background: #fdfdfd;
+      color: #2b2b2b;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: flex-start;
+      padding: 40px 20px;
+      min-height: 100vh;
+      line-height: 1.6;
+    }
+    button {
+      background: #e8d8d2;
+      color: #2b2b2b;
+      padding: 10px 20px;
+      font-size: 16px;
+      border: 1px solid #d5c1bb;
+      border-radius: 8px;
+      cursor: pointer;
+      margin: 8px;
+      transition: background 0.3s ease, box-shadow 0.3s ease;
+    }
+    button:hover {
+      background: #f3e8e4;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+    }
+    .tag-box {
+      background: #ffffff;
+      padding: 24px;
+      border-radius: 12px;
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.05);
+      text-align: left;
+      width: 100%;
+      max-width: 600px;
+      margin-top: 30px;
+    }
+    .category {
+      font-weight: bold;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+    }
+  </style>
+  <style id="dark-mode-style" disabled>
+    body {
+      background: #1e1e1e;
+      color: #f2f2f2;
+    }
+    .tag-box {
+      background: #2a2a2a;
+      color: #f2f2f2;
+    }
+    button {
+      background: #8a4f78;
+      color: white;
+    }
+    button:hover {
+      background: #a3668d;
+    }
+    ul#savedCombos {
+      color: #f2f2f2;
+    }
+  </style>
+</head>
+<body>
+  <h1 style="font-size: 28px; margin-bottom: 20px;">✨ Script Prompt Tag Generator ✨</h1>
+  <button onclick="toggleDarkMode()">Toggle Light/Dark Mode</button>
+  <button onclick="generateTags()">Give Me Tags!</button>
+  <button onclick="saveTags()">Save This Combo</button>
+  <ul id="savedCombos" style="margin-top: 20px; list-style-type: disc; padding-left: 20px; max-width: 500px; width: 100%;"></ul>
+  <div class="tag-box" id="tagBox"></div>
+
+  <script>
+    const tags = {
+      "Mood": ["Needy", "Flirty", "Rough and dominant", "Crying and needing comfort"],
+      "Setting": ["In bed", "At a party", "On the beach", "In the shower"],
+      "Kinks": ["spanking", "edging", "overstimulation", "dirty talk", "breathplay"],
+      "Dynamics": ["dom/sub", "femdom", "switch", "jealousy"],
+      "Relationship": ["Friends with benefits", "Crush", "Enemies to lovers", "Secret affair"],
+      "Other Tags": ["bratty", "listener POV", "scripted moans", "moaning", "sound effects"]
+    };
+
+    function getRandomItem(arr) {
+      return arr[Math.floor(Math.random() * arr.length)];
+    }
+
+    function generateTags() {
+      let result = "";
+      for (const category in tags) {
+        if (category === "Kinks") {
+          const numberOfKinks = Math.floor(Math.random() * 4) + 2;
+          const shuffled = [...tags[category]].sort(() => 0.5 - Math.random());
+          const selectedKinks = shuffled.slice(0, numberOfKinks);
+          result += `<div style='margin-bottom: 24px; border-bottom: 1px solid #eee; padding-bottom: 16px;'><p><span class='category'>${getIcon(category)} ${category}:</span> ${selectedKinks.join(", ")}</p></div>`;
+        } else {
+          const tag = getRandomItem(tags[category]);
+          result += `<div style='margin-bottom: 24px; border-bottom: 1px solid #eee; padding-bottom: 16px;'><p><span class='category'>${getIcon(category)} ${category}:</span> ${tag}</p></div>`;
+        }
+      }
+      document.getElementById('tagBox').innerHTML = result;
+      window.lastGeneratedTags = result;
+    }
+
+    function saveTags() {
+      if (window.lastGeneratedTags) {
+        const ul = document.getElementById("savedCombos");
+        const li = document.createElement("li");
+        li.innerHTML = window.lastGeneratedTags;
+        ul.prepend(li);
+      }
+    }
+
+    function getIcon(category) {
+      const icons = {
+        "Mood": "💭",
+        "Setting": "📍",
+        "Kinks": "🔞",
+        "Dynamics": "🧩",
+        "Relationship": "💘",
+        "Other Tags": "✨"
+      };
+      return icons[category] || "🔖";
+    }
+
+    function toggleDarkMode() {
+      const style = document.getElementById('dark-mode-style');
+      style.disabled = !style.disabled;
+    }
+
+    window.onload = function() {
+      generateTags();
+    };
+  </script>
+</body>
+</html>
